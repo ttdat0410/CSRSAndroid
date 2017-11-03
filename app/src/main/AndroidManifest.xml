@@ -28,12 +28,12 @@
             </intent-filter>
         </activity>
 
-        <!--<activity
-            android:name=".scanner.ScannerCodeActivity"
-            android:screenOrientation="landscape"
+        <activity
+            android:name=".scan.ScannerCode"
+            android:screenOrientation="portrait"
             android:theme="@style/StatusBarTranslucentTheme">
 
-        </activity>-->
+        </activity>
     </application>
 
 </manifest>

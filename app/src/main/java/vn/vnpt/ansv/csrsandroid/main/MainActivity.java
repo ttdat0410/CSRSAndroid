@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import vn.vnpt.ansv.csrsandroid.R;
 import vn.vnpt.ansv.csrsandroid.common.ui.CSRSActivity;
+import vn.vnpt.ansv.csrsandroid.scan.ScannerCode;
 
 public class MainActivity extends CSRSActivity {
 
@@ -57,7 +59,7 @@ public class MainActivity extends CSRSActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                startActivity(new Intent(getApplicationContext(), ScannerCodeActivity.class));
+                startActivity(new Intent(getApplicationContext(), ScannerCode.class));
             }
         }, TIMER);
     }
@@ -73,7 +75,7 @@ public class MainActivity extends CSRSActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                startActivity(new Intent(getApplicationContext(), ScannerCodeActivity.class));
+                startActivity(new Intent(getApplicationContext(), ScannerCode.class));
             }
         }, timer);
     }
