@@ -1,0 +1,129 @@
+def versionMajor = 1
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = {
+    if (project.hasProperty("buildNumber")) {
+        return project.buildNumber as int
+    } else if (System.getenv("BUILD_NUMBER")) {
+        return System.getenv("BUILD_NUMBER")
+    } else {
+        return 0
+    }
+}.call()
+
+def buildTime = new Date().format("HH:mm:ss, dd-MM-yyyy", java.util.TimeZone.getTimeZone("UTC"))
+def preDexEnable = "true".equals(System.getProperty("pre-dex", "true"))
+def projectName = "CSRS"
+
+def isCIBuild = System.getenv()['bamboo_planName'] ? true : false
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('keystores/csrsandroid.properties').newDataInputStream())
+
+def ip = properties.getProperty('tcp.ip')
+def port = properties.getProperty('tcp.port')
+
+def sf = properties.getProperty('store.file')
+def sp = properties.getProperty('store.password')
+def ka = properties.getProperty('key.alias')
+def kp = properties.getProperty('key.password')
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    signingConfigs {
+        release {
+            storeFile file("${sf}")
+            storePassword "${sp}"
+            keyAlias "${ka}"
+            keyPassword "${kp}"
+        }
+    }
+
+    defaultConfig {
+        applicationId "vn.vnpt.ansv.csrsandroid"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode versionMajor * 10000000 + versionMinor * 100000 + versionPatch * 1000 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+        buildConfigField 'String', 'TCP_IP', "\"${ip}\""
+        buildConfigField 'String', 'TCP_PORT', "\"${port}\""
+    }
+
+    compileOptions {
+        sourceCompatibility org.gradle.api.JavaVersion.VERSION_1_7
+        targetCompatibility org.gradle.api.JavaVersion.VERSION_1_7
+    }
+
+    dexOptions {
+//        preDexLibraries = preDexEnabled
+    }
+
+    packagingOptions {
+        // recommended from Firebase
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            //Other parameters
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            pseudoLocalesEnabled false
+            zipAlignEnabled true
+        }
+    }
+
+    // Rename the output apk
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            // don't use gitSha with dev builds because AS gets confused
+            def filePrefix = isCIBuild ? "${projectName}-${variant.name}-${versionName}-${gitSha}" : "${projectName}-${variant.name}-${versionName}"
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                output.outputFile = file("$project.buildDir/${filePrefix}.apk")
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // Android
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    // Timber
+    compile 'com.jakewharton.timber:timber:3.1.0'
+    // Butterknife
+    compile 'com.jakewharton:butterknife:7.0.0'
+    // Dagger 2
+    compile 'com.google.dagger:dagger:2.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    // QR Code
+    compile 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
+    // Button
+    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+}
