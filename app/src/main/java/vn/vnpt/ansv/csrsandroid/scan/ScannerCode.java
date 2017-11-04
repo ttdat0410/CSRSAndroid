@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +57,12 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
         final Toolbar toolbar = materialViewPager.getToolbar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(false);
+            actionBar.setHomeButtonEnabled(true);
         }
 //        setSupportActionBar(toolbar);
 //        toolbar.setBackgroundColor(getResourceColor(R.color.sl_terbium_green));
@@ -89,16 +96,7 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
 
             @Override
             public Fragment getItem(int position) {
-                switch (position % 4) {
-                    //case 0:
-                    //    return RecyclerViewFragment.newInstance();
-                    //case 1:
-                    //    return RecyclerViewFragment.newInstance();
-                    //case 2:
-                    //    return WebViewFragment.newInstance();
-                    default:
-                        return RecyclerViewFragment.newInstance();
-                }
+                return RecyclerViewFragment.newInstance();
             }
 
             @Override
@@ -108,16 +106,6 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
 
             @Override
             public CharSequence getPageTitle(int position) {
-//                switch (position % 4) {
-//                    case 0:
-//                        return "Selection";
-//                    case 1:
-//                        return "Actualités";
-//                    case 2:
-//                        return "Professionnel";
-//                    case 3:
-//                        return "Divertissement";
-//                }
                 return "";
             }
         });
@@ -125,34 +113,13 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
         materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
-                switch (page) {
-                    case 0:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.green,
-                                "http://phandroid.s3.amazonaws.com/wp-content/uploads/2014/06/android_google_moutain_google_now_1920x1080_wallpaper_Wallpaper-HD_2560x1600_www.paperhi.com_-640x400.jpg");
-                    case 1:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.blue,
-                                "http://www.hdiphonewallpapers.us/phone-wallpapers/540x960-1/540x960-mobile-wallpapers-hd-2218x5ox3.jpg");
-                    case 2:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.cyan,
-                                "http://www.droid-life.com/wp-content/uploads/2014/10/lollipop-wallpapers10.jpg");
-                    case 3:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.red,
-                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
-                }
-
-                //execute others actions if needed (ex : modify your header logo)
-
-                return null;
+                return HeaderDesign.fromColorResAndUrl(
+                        R.color.green,
+                        "http://phandroid.s3.amazonaws.com/wp-content/uploads/2014/06/android_google_moutain_google_now_1920x1080_wallpaper_Wallpaper-HD_2560x1600_www.paperhi.com_-640x400.jpg");
             }
         });
 
         materialViewPager.getViewPager().setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
-        materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
-
         final View logo = findViewById(R.id.logo_white);
         if (logo != null) {
             logo.setOnClickListener(new View.OnClickListener() {

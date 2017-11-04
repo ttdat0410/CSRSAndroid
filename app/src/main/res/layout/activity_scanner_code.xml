@@ -12,9 +12,9 @@
         android:layout_height="match_parent"
         app:viewpager_logo="@layout/header_logo"
         app:viewpager_pagerTitleStrip="@layout/material_view_pager_pagertitlestrip_newstand"
-        app:viewpager_logoMarginTop="100dp"
+        app:viewpager_logoMarginTop="60dp"
         app:viewpager_color="@color/colorPrimary"
-        app:viewpager_headerHeight="200dp"
+        app:viewpager_headerHeight="120dp"
         app:viewpager_headerAlpha="1.0"
         app:viewpager_imageHeaderDarkLayerAlpha="0.2"
         app:viewpager_hideLogoWithFade="false"
@@ -23,38 +23,8 @@
         app:viewpager_parallaxHeaderFactor="1.5"
         app:viewpager_headerAdditionalHeight="20dp"
         app:viewpager_displayToolbarWhenSwipe="true"
-        app:viewpager_transparentToolbar="false"
+        app:viewpager_transparentToolbar="true"
         app:viewpager_animatedHeaderImage="true"
+        app:viewpager_disableToolbar="true" />
 
-        />
-
-    <!--<android.support.v7.widget.Toolbar
-        android:id="@+id/scanner_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:theme="@style/SearchToolbar"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/Popup" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/scanner_toolbar">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/demos_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:scrollbars="vertical" />
-
-    </RelativeLayout>-->
-
-    <!--<fragment-->
-    <!--android:name="vn.vnpt.ansv.vrate.common.ui.VRatingStatusFragment"-->
-    <!--android:id="@+id/bluegecko_status_fragment"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"/>-->
 </RelativeLayout>

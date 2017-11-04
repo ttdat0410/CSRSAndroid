@@ -26,7 +26,7 @@ import vn.vnpt.ansv.csrsandroid.R;
 public class RecyclerViewFragment extends Fragment {
 
     private static final boolean GRID_LAYOUT = false;
-    private static final int ITEM_COUNT = 100;
+    private static final int ITEM_COUNT = 7;
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -55,7 +55,7 @@ public class RecyclerViewFragment extends Fragment {
         //setup materialviewpager
 
         if (GRID_LAYOUT) {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }

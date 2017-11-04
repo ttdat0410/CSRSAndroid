@@ -28,7 +28,7 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemViewType(int position) {
         switch (position) {
             case 0:
-                return TYPE_HEADER;
+                return TYPE_CELL;
             default:
                 return TYPE_CELL;
         }
