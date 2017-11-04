@@ -36,8 +36,8 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
     @Inject
     ScannerCodePresenter presenter;
 
-    @Bind(R.id.scanner_toolbar)
-    Toolbar toolbar;
+//    @Bind(R.id.scanner_toolbar)
+//    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,15 +48,15 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
         if (presenter == null) {
             throw new IllegalStateException("Presenter has to be injected");
         }
-        setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(getResourceColor(R.color.sl_terbium_green));
-        toolbar.setTitle(getString(R.string.app_name));
-
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-        params.height += getStatusBarHeight();
-
-        toolbar.setLayoutParams(params);
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+//        setSupportActionBar(toolbar);
+//        toolbar.setBackgroundColor(getResourceColor(R.color.sl_terbium_green));
+//        toolbar.setTitle(getString(R.string.app_name));
+//
+//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+//        params.height += getStatusBarHeight();
+//
+//        toolbar.setLayoutParams(params);
+//        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
 
 
         ActionBar actionBar = getSupportActionBar();

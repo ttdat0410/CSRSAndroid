@@ -126,4 +126,11 @@ dependencies {
     compile 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
     // Button
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+
+    // toasts
+    compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
+
+    // Cuatom ActionBar
+    compile 'com.github.florent37:materialviewpager:1.2.3'
+
 }
