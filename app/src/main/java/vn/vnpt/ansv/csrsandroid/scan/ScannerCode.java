@@ -127,20 +127,21 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
                     @Override
                     public void onResult(Barcode barcode) {
                         barcodeResult = barcode;
-                        Log.i(TAG, barcode.rawValue + " L K K KK K K");
+                        Log.i(TAG, barcode.rawValue);
                         // TODO found barcode, send request to server to get staff infomation (2) if success
                         ParsableAsType.isParsableAsLong(barcode.rawValue, new ParsableAsType.ParsableCallback() {
                             @Override
                             public void callback(boolean isMatches, String ex) {
                                 if (isMatches) {
-
+                                    Log.i(TAG, "MATCHES");
                                 } else {
+                                    Log.i(TAG, "DONT MATCHES");
                                     AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
                                     alertDialog.setTitle("Thông báo");
                                     alertDialog.setMessage("Mã không hợp lệ.");
-                                    alertDialog.setButton("Xác nhận", new DialogInterface.OnDismissListener(){
+                                    alertDialog.setButton("Xác nhận", new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onDismiss(DialogInterface dialogInterface) {
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
                                         }
                                     });
