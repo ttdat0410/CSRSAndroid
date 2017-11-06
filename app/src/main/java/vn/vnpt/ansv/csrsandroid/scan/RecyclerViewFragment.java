@@ -51,9 +51,6 @@ public class RecyclerViewFragment extends Fragment {
             items.add(new Object());
         }
 
-
-        //setup materialviewpager
-
         if (GRID_LAYOUT) {
 //            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else {

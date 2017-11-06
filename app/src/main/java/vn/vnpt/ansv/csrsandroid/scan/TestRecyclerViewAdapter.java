@@ -16,9 +16,19 @@ import vn.vnpt.ansv.csrsandroid.R;
 public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<Object> contents;
-
-    static final int TYPE_HEADER = 0;
-    static final int TYPE_CELL = 1;
+    enum TypeCell {
+        TYPE_HEADER(0),
+        TYPE_DETAIL(1);
+        public final int value;
+        TypeCell(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
+//    static final int TYPE_HEADER = 0;
+//    static final int TYPE_CELL = 1;
 
     public TestRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
@@ -28,9 +38,9 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemViewType(int position) {
         switch (position) {
             case 0:
-                return TYPE_CELL;
+                return TypeCell.TYPE_HEADER.getValue();
             default:
-                return TYPE_CELL;
+                return TypeCell.TYPE_DETAIL.getValue();
         }
     }
 
@@ -44,13 +54,13 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view = null;
 
         switch (viewType) {
-            case TYPE_HEADER: {
+            case 0: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_card_big, parent, false);
                 return new RecyclerView.ViewHolder(view) {
                 };
             }
-            case TYPE_CELL: {
+            case 1: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_card_small, parent, false);
                 return new RecyclerView.ViewHolder(view) {
@@ -64,9 +74,9 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case TYPE_HEADER:
+            case 0:
                 break;
-            case TYPE_CELL:
+            case 1:
                 break;
         }
     }

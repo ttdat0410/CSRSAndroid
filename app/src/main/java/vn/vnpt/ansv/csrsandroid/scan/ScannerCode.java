@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
@@ -26,6 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import vn.vnpt.ansv.csrsandroid.R;
 import vn.vnpt.ansv.csrsandroid.common.ui.CSRSActivity;
+import vn.vnpt.ansv.csrsandroid.common.utils.ParsableAsType;
 
 /**
  * Created by ANSV on 11/3/2017.
@@ -39,7 +39,7 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
     private Barcode barcodeResult;
 
     @Inject
-    ScannerCodePresenter presenter;
+    ScannerCodePresenter scannerCodePresenter;
 
     @Bind(R.id.materialViewPager)
     MaterialViewPager materialViewPager;
@@ -51,7 +51,7 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
         setTitle("");
         ButterKnife.bind(this);
         component().inject(this);
-        if (presenter == null) {
+        if (scannerCodePresenter == null) {
             throw new IllegalStateException("Presenter has to be injected");
         }
         final Toolbar toolbar = materialViewPager.getToolbar();
@@ -64,22 +64,6 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
             actionBar.setDisplayUseLogoEnabled(false);
             actionBar.setHomeButtonEnabled(true);
         }
-//        setSupportActionBar(toolbar);
-//        toolbar.setBackgroundColor(getResourceColor(R.color.sl_terbium_green));
-//        toolbar.setTitle(getString(R.string.app_name));
-//
-//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-//        params.height += getStatusBarHeight();
-//
-//        toolbar.setLayoutParams(params);
-//        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-
-
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//            //actionBar.setDisplayShowTitleEnabled(false);
-//        }
 
         RecyclerViewFragment.newInstance();
         changeStatusBarColor(getResourceColor(R.color.primary_color));
@@ -88,6 +72,8 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
             if(restoredBarcode != null){
                 barcodeResult = restoredBarcode;
                 Log.i(TAG, restoredBarcode.rawValue);
+                // TODO found barcode, send request to server to get staff infomation (1)
+
             }
         }
         startScan();
@@ -96,17 +82,17 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
 
             @Override
             public Fragment getItem(int position) {
-                return RecyclerViewFragment.newInstance();
+                return scannerCodePresenter.getItemViewPage(position);
             }
 
             @Override
             public int getCount() {
-                return 1;
+                return scannerCodePresenter.getCountViewPage();
             }
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return "";
+                return scannerCodePresenter.getPageTitleViewPage(position);
             }
         });
 
@@ -120,16 +106,12 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
         });
 
         materialViewPager.getViewPager().setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
-//        final View logo = findViewById(R.id.logo_white);
-//        if (logo != null) {
-//            logo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    materialViewPager.notifyHeaderChanged();
-//                    Toast.makeText(getApplicationContext(), "Yes, the title is clickable", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scannerCodePresenter.setViewListener(this);
     }
 
     private void startScan() {
@@ -145,7 +127,27 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
                     @Override
                     public void onResult(Barcode barcode) {
                         barcodeResult = barcode;
-                        Log.i(TAG, barcode.rawValue);
+                        Log.i(TAG, barcode.rawValue + " L K K KK K K");
+                        // TODO found barcode, send request to server to get staff infomation (2) if success
+                        ParsableAsType.isParsableAsLong(barcode.rawValue, new ParsableAsType.ParsableCallback() {
+                            @Override
+                            public void callback(boolean isMatches, String ex) {
+                                if (isMatches) {
+
+                                } else {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
+                                    alertDialog.setTitle("Thông báo");
+                                    alertDialog.setMessage("Mã không hợp lệ.");
+                                    alertDialog.setButton("Xác nhận", new DialogInterface.OnDismissListener(){
+                                        @Override
+                                        public void onDismiss(DialogInterface dialogInterface) {
+
+                                        }
+                                    });
+                                    alertDialog.show();
+                                }
+                            }
+                        });
                     }
                 })
                 .build();
@@ -182,6 +184,18 @@ public class ScannerCode extends CSRSActivity implements ScannerCodeListener {
 
     @Override
     public void onData() {
+        Log.i(TAG, "received data from presenter");
+        ParsableAsType.isParsableAsLong("68L", new ParsableAsType.ParsableCallback() {
+            @Override
+            public void callback(boolean isMatches, String ex) {
+                if (isMatches) {
+                    // MATCH....
+                } else {
+                    Log.i(TAG, ex);
+                    // error with ex
+                }
+            }
+        });
 
     }
 }
